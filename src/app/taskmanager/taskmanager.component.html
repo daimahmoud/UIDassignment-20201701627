@@ -1,0 +1,79 @@
+
+<div class ="container">
+    <form (ngSubmit)="onSubmit(taskform)" #taskform="ngForm">
+        <h1>Task Management App!</h1>
+        <hr>
+        
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Task name</label>
+          <input 
+            type="task" class="form-control" 
+            placeholder="ex: Clean the dishes"
+            ngModel name="task" required>
+          <small *ngIf="taskform.invalid && taskform.dirty" id="task" class="form-text text-danger">Please add your task.</small>
+            
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Task description</label>
+          <textarea 
+            class="form-control" 
+            rows="3"
+            ngModel name="description">
+        </textarea>
+ 
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Task due date</label>
+            <input type="date"
+            ngModel name="date">
+        </div>
+    
+        <button [disabled]="taskform.invalid" id ="addbutton" type="submit" class="btn btn-primary">Add</button>
+      </form>
+      
+      
+      <hr>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Task Name</th>
+            <th scope="col">Completed</th>
+            <th scope="col">Edit task</th>
+            <th scope="col">Save Edit</th>
+            <th scope="col">Delete task</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr *ngFor="let t of taskArray ; index as i">
+             
+              <td>{{i+1}}</td> 
+            
+             <td>
+              <input #input [ngClass]="{'edit': t.isEditable, 'not-edit': !t.isEditable, 'crossed': t.isCompleted}" type="task"
+                 class="form-control" id="taskintable" value="{{t.taskName}}" [readonly]="!t.isEditable">
+                
+              <input #descinput [ngClass]="{'edit': t.isEditable, 'not-edit': !t.isEditable, 'crossed': t.isCompleted}" type="description"
+                class="form-control" id="taskintable" value="{{t.taskDescription}}" [readonly]="!t.isEditable">
+              
+              <input #dateinput [ngClass]="{'edit': t.isEditable, 'not-edit': !t.isEditable, 'crossed': t.isCompleted}" type="date"
+                class="form-control" id="taskintable" value="{{t.taskDueDate}}" [readonly]="!t.isEditable">
+              
+            </td>
+            
+            <td><input (change)="onCheck(i)" id ="checkbox" type="checkbox" aria-label="Checkbox for following text input"></td>
+            
+            <td><button id="Edit" class="btn btn-info btn-sm"(click)="onEdit(i)" [disabled]="t.isEditable">Edit</button></td>
+            
+            <td><button id="Save" class="btn btn-warning btn-sm" (click)="onSave(i,input.value,descinput.value,dateinput.value)"
+              [disabled]="!t.isEditable">Save</button>
+            </td>
+            
+            <td><button id="Delete" class="btn btn-danger btn-sm" (click)="onDelete(i)">Delete </button></td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
